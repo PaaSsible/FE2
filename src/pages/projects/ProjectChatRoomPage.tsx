@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import { Search, ChevronLeft } from 'lucide-react'
 import { Fragment, useEffect, useRef, useState, type JSX } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import SockJS from 'sockjs-client'
 import { ZodError } from 'zod'
 
 import {
@@ -158,7 +157,7 @@ const ProjectChatRoomPage = (): JSX.Element => {
     if (!client.current) {
       const token = getAccessToken()
       client.current = new Client({
-        webSocketFactory: () => new SockJS(`${CHAT_API_URL}/chats/ws-chat`),
+        brokerURL: `${CHAT_API_URL.replace(/^http/, 'ws')}/chats/ws-chat`,
         connectHeaders: {
           Authorization: `Bearer ${token}`,
         },
